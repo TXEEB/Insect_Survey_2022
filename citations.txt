@@ -1,0 +1,8 @@
+Cite all software used to plot figures or run models.
+
+Software that just makes things easier for you but doesn't produce any the 
+results (e.g. dplyr for data cleaning) is usually not cited. 
+
+Software/Packages Used:
+- R 4.1.X
+- ggplot2
