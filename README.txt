@@ -14,6 +14,6 @@ The description in a short summary of what your script does.
 
 FOR FIGURES:
 
-Towards the end of your filename, include your last name so we can keep track of who made that particular version of the figure.
+Towards the end of your filename, include some version of your name so we can keep track of who made that particular version of the figure.
 
 Ex: 'family_site_durant.png'
