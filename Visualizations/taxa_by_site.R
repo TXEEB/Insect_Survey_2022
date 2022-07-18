@@ -3,6 +3,7 @@
 # Description: Taxon groups by site
 
 library(tidyverse)
+library(ggpubr) # One of many good multi-panel figure packages
 
 bug_data <- read.csv('./Data/CLEAN_PRELIM_EEBClub_UTICdata_Weather_v2.csv')
 
@@ -36,7 +37,8 @@ family_site <- bug_data %>%
   filter(site != 'Misc' & site != 'UT Campus') %>%
   mutate(species = tolower(species)) %>%
   # Record each unique genus/species combos for each site
-  group_by(site, genus, species) %>%
+  # Comment these three lines out below to restore to abundance plots
+  group_by(site, family, genus, species) %>%
   slice(n = 1) %>%
   ungroup() %>%
   # Group by site and family
@@ -64,18 +66,28 @@ family_site_col <- function(x) {
     aes(
       x = number, 
       y = fct_reorder(family, number),
-      fill = fct_reorder(order, -number)
+      fill = order
     ) +
     geom_col() +
     # Formatting
     ggtitle(x) +
     xlab('Number of Identified Species or Genera') +
-    ylab('Family') +
-    scale_fill_discrete(name = 'Order')
+    ylab(NULL) + # It is clear that these axes are for family imo
+    scale_fill_txeeb_orders()
   
 }
 
-family_site_col('Painter Pollinator Garden')
-family_site_col('UT Farm Stand Gardens')
-family_site_col('Waller Creek #1 (light)')
-family_site_col('Waller Creek #2 (dark)')
+papo_fam <- family_site_col('Painter Pollinator Garden')
+utfs_fam <- family_site_col('UT Farm Stand Gardens')
+wcli_fam <- family_site_col('Waller Creek #1 (light)')
+wcda_fam <-family_site_col('Waller Creek #2 (dark)')
+
+# Multipanel figure
+ggpubr::ggarrange(
+  # Panels
+  papo_fam, utfs_fam, wcli_fam, wcda_fam,
+  # Formatting
+  ncol = 2, nrow = 2,
+  common.legend = T, legend = 'bottom', 
+  align = 'hv'
+)
