@@ -35,6 +35,10 @@ family_site <- bug_data %>%
   # Keep only the four main sites
   filter(site != 'Misc' & site != 'UT Campus') %>%
   mutate(species = tolower(species)) %>%
+  # Record each unique genus/species combos for each site
+  group_by(site, genus, species) %>%
+  slice(n = 1) %>%
+  ungroup() %>%
   # Group by site and family
   group_by(site, family) %>%
   # Number of each family at each site
@@ -52,22 +56,22 @@ family_site <- family_site %>%
 
 family_site_col <- function(x) {
 
-family_site %>%
-  # Plot bar plot for pollinator garden
-  filter(site == x) %>%
-  drop_na() %>%
-  ggplot() +
-  aes(
-    x = number, 
-    y = fct_reorder(family, number),
-    fill = fct_reorder(order, -number)
-  ) +
-  geom_col() +
-  # Formatting
-  ggtitle(x) +
-  xlab('Individuals') +
-  ylab('Family') +
-  scale_fill_discrete(name = 'Order')
+  family_site %>%
+    # Plot bar plot for pollinator garden
+    filter(site == x) %>%
+    drop_na() %>%
+    ggplot() +
+    aes(
+      x = number, 
+      y = fct_reorder(family, number),
+      fill = fct_reorder(order, -number)
+    ) +
+    geom_col() +
+    # Formatting
+    ggtitle(x) +
+    xlab('Number of Identified Species or Genera') +
+    ylab('Family') +
+    scale_fill_discrete(name = 'Order')
   
 }
 
