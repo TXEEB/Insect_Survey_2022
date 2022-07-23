@@ -1,0 +1,53 @@
+---
+title: "Stetson Visualizations Doc"
+author: "Stetson"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+Here is a document containing all the visualizations I made. Feel free to edit in order to make the color scheme/general style flow with our other figures
+
+Load library
+```{r}
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+colors:
+#9e5e57 (dark red)
+#dda458 (soft orange)
+#418291 (blue)
+#597f6b (light green)
+#495649 (dark green) 
+
+Loading df
+```{r}
+bug <- read.csv("~/Documents/GitHub/Insect_Survey_2022/Data/CLEAN_PRELIM_EEBClub_UTICdata_Weather_v2.csv")
+```
+
+Which orders did we see?
+```{r}
+ggplot (bug, aes(x= reorder(order, order, table), fill = order)) +
+  geom_bar(color = "black") +
+  theme_classic() +
+  xlab("Order") +
+  ylab("# of Specimens Collected") +
+    coord_flip() +
+  ggtitle("Orders Represented in Our Data")
+```
+
+
+How did this vary by site?
+```{r}
+ggplot (bug, aes(x= reorder(order, order, table), fill = order)) +
+  geom_bar(color = "black") +
+  theme_classic() +
+  xlab("Order") +
+  ylab("# of Bugs We Collected") +
+  ggtitle("Orders by Site") +
+  facet_wrap (~ site) +
+  coord_flip()
+```
+
