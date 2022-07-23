@@ -6,7 +6,7 @@ At the top of every script, please put the following!
 
 Authors are the ones who are taking the charge on a particular task/analysis.
 
-Contributors are those who make relatively changes (maybe the authors need help with something or something has to be changed retroactively after the authors are finished).
+Contributors are those who make relatively small changes (maybe the authors need help with something or something has to be changed retroactively after the authors are finished).
 
 The description in a short summary of what your script does.
 
