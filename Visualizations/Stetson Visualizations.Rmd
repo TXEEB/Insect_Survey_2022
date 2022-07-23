@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+Description:
 Here is a document containing all the visualizations I made. Feel free to edit in order to make the color scheme/general style flow with our other figures
 
 Load library
