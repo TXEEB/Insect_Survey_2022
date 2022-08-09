@@ -2,8 +2,8 @@
 # Contributors: 
 # Description: Taxon groups by site
 
-library(tidyverse)
-library(ggpubr) # One of many good multi-panel figure packages
+require(tidyverse)
+require(ggpubr) # One of many good multi-panel figure packages
 
 bug_data <- read.csv('./Data/CLEAN_PRELIM_EEBClub_UTICdata_Weather_v2.csv')
 
@@ -13,13 +13,13 @@ taxa_data <- bug_data %>%
   select(order, family, genus, species) %>%
   # Make sure species are lowercase
   mutate(species = tolower(species)) %>%
-  group_by(genus, species) %>%
-  # Keep only 1 row for each unique genus/species combos
+  group_by(order, family, genus, species) %>%
+  # Keep only 1 row for each unique taxa combos
   slice(n = 1) %>%
   # Create column for scientific names
   mutate(
     binomial = if_else(
-      is.na(species),
+      is.na(species) & !is.na(genus),
       # Use spp. if species is unknown
       paste(genus, 'spp.', sep = ' '),
       paste(genus, species, sep = ' ')
@@ -27,7 +27,7 @@ taxa_data <- bug_data %>%
   ) %>%
   ungroup()
 
-#write.csv(taxa_data, './data/EEBCLUB_TAXA.csv')
+write.csv(taxa_data, './data/EEBCLUB_TAXA.csv')
 
 
 #### Families by Site ####
@@ -80,12 +80,12 @@ family_site_col <- function(x) {
 papo_fam <- family_site_col('Painter Pollinator Garden')
 utfs_fam <- family_site_col('UT Farm Stand Gardens')
 wcli_fam <- family_site_col('Waller Creek #1 (light)')
-wcda_fam <-family_site_col('Waller Creek #2 (dark)')
+wcda_fam <- family_site_col('Waller Creek #2 (dark)')
 
 # Multipanel figure
 ggpubr::ggarrange(
   # Panels
-  papo_fam, utfs_fam, wcli_fam, wcda_fam,
+  papo_fam, utfs_fam, wcli_fam, wcda_fam, # Remove Number of IDs on top plots, fix scales
   # Formatting
   ncol = 2, nrow = 2,
   common.legend = T, legend = 'bottom', 
